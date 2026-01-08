@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    <link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<div class="background-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+</div>
+
+<button id="theme-toggle" class="icon-btn top-right" aria-label="Toggle Theme">
+    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+    <svg class="moon-icon hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+</button>
+
+<section id="view-upload" class="view hidden">
+    <div class="glass-card">
+        <h2>Welcome</h2>
+        <p style="margin-bottom: 20px; font-size: 14px; opacity: 0.8;">
+            Upload your family Excel file (.xlsx) to get started. Data is saved to your browser.
+        </p>
+        
+        <label for="file-upload" class="custom-file-upload primary-btn">
+            Select Excel File
+        </label>
+        <input id="file-upload" type="file" accept=".xlsx, .xls, .csv" style="display:none;"/>
+        
+        <p id="upload-status" class="loading hidden" style="margin-top:15px;">Processing...</p>
+        
+        <div id="data-exists-msg" class="hidden" style="margin-top: 20px;">
+            <p style="color:var(--success-color); font-weight:bold; margin-bottom:10px;">Data Found!</p>
+            <button id="btn-goto-search" class="primary-btn">Go to Search &rarr;</button>
+        </div>
+    </div>
+</section>
+
+<section id="view-search" class="view hidden">
+    <button id="btn-settings" class="icon-btn top-left" aria-label="Settings">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+    </button>
+
+    <div class="search-container">
+        <div class="search-bar-wrapper">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="search-input" placeholder="Search family names...">
+        </div>
+        <div id="loading-indicator" class="loading hidden">Loading Local Data...</div>
+    </div>
+
+    <div id="results-container" class="results-grid"></div>
+    <button id="btn-info" class="floating-btn">i</button>
+</section>
+
+<div id="info-modal" class="modal-overlay hidden">
+    <div class="glass-card modal-card">
+        <h3>My Hebichs</h3>
+        <p>Version 3.1 (Offline Mode)</p>
+        <p>Data is stored locally in your browser.</p>
+        <button id="btn-close-modal" class="text-btn">Close</button>
+    </div>
+</div>
+
+<div id="details-modal" class="modal-overlay hidden">
+    <div class="glass-card modal-card">
+        <div id="details-content"></div>
+        <button id="btn-close-details" class="text-btn">Close</button>
+    </div>
+</div>
+    <script  src="./script.js"></script>
+
+  </body>
+  
+</html>
